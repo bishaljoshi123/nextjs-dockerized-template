@@ -1,0 +1,46 @@
+steps:
+  # Install dependencies
+  - name: "node:16"
+    entrypoint: "npm"
+    args: ["install"]
+    id: "install-deps"
+
+  # Run tests
+  - name: "node:16"
+    entrypoint: "npm"
+    args: ["test"]
+    id: "run-tests"
+
+  # Build Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-t", "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA", "."]
+    id: "build-image"
+    waitFor: ["run-tests"]
+
+  # Push Docker image to Google Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA"]
+    id: "push-image"
+    waitFor: ["build-image"]
+
+  # Deploy to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "next-app",
+        "--image",
+        "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA",
+        "--region",
+        "YOUR_REGION",
+        "--platform",
+        "managed",
+      ]
+    id: "deploy"
+    waitFor: ["push-image"]
+
+# Substitutions for environment variables
+substitutions:
+  _REGION: us-east1

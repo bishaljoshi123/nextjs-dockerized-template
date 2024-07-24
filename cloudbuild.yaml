@@ -13,10 +13,11 @@ steps:
 
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"
-    args: [
+    args:
+      [
         "build",
         "-f",
-        "Dockerfile.dev", # Specify the Dockerfile to use
+        "Dockerfile.dev",
         "-t",
         "gcr.io/rich-torus-428117-m8/nextjs-dockerized-template:$COMMIT_SHA",
         ".",

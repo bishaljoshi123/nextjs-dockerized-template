@@ -17,7 +17,7 @@ steps:
       [
         "build",
         "-f",
-        "/workspace/Dockerfile.dev",
+        "Dockerfile.dev",
         "-t",
         "gcr.io/rich-torus-428117-m8/nextjs-dockerized-template:$COMMIT_SHA",
         ".",

@@ -5,6 +5,6 @@ import About from "../pages/about/index";
 test("About", () => {
   render(<About />);
   expect(
-    screen.getByRole("heading", { level: 1, name: "About" })
+    screen.getByRole("heading", { level: 1, name: "About Us" })
   ).toBeDefined();
 });

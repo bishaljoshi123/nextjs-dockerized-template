@@ -14,13 +14,22 @@ steps:
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "-t", "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA", "."]
+      [
+        "build",
+        "-t",
+        "gcr.io/rich-torus-428117-m8/nextjs-dockerized-template:$COMMIT_SHA",
+        ".",
+      ]
     id: "build-image"
     waitFor: ["run-tests"]
 
   # Push Docker image to Google Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA"]
+    args:
+      [
+        "push",
+        "gcr.io/rich-torus-428117-m8/nextjs-dockerized-template:$COMMIT_SHA",
+      ]
     id: "push-image"
     waitFor: ["build-image"]
 
@@ -30,9 +39,9 @@ steps:
       [
         "run",
         "deploy",
-        "next-app",
+        "nextjs-dockerized-template",
         "--image",
-        "gcr.io/rich-torus-428117-m8/next-app:$COMMIT_SHA",
+        "gcr.io/rich-torus-428117-m8/nextjs-dockerized-template:$COMMIT_SHA",
         "--region",
         "YOUR_REGION",
         "--platform",
@@ -43,4 +52,4 @@ steps:
 
 # Substitutions for environment variables
 substitutions:
-  _REGION: us-east1
+  _REGION: us-central1

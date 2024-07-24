@@ -1,4 +1,9 @@
 steps:
+  # List directory contents
+  - name: "gcr.io/cloud-builders/gsutil"
+    args: ["ls", "-R"]
+    id: "list-dir"
+
   # Install dependencies
   - name: "node:16"
     entrypoint: "npm"

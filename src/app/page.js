@@ -3,6 +3,7 @@
 import { healthCheckFastAPI, healthCheckNestJs } from "@/api/healthCheck";
 
 export default function Home() {
+  console.log("develop");
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col space-y-4">

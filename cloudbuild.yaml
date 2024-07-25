@@ -25,6 +25,15 @@ steps:
         gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
         chmod 600 /root/.ssh/id_rsa
 
+  # Print secret (for debugging, remove this in production)
+  - name: "google/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "Secret contents:"
+        cat /root/.ssh/id_rsa
+
   # Upload coverage reports to VM
   - name: "alpine"
     entrypoint: "sh"

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import About from "../pages/about/index"; // Update the import path if necessary
+import About from "../pages/about/index";
 import React from "react";
 describe("About", () => {
   it("renders a heading", () => {

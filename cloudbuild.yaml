@@ -15,7 +15,6 @@ steps:
     entrypoint: "npm"
     args: ["test", "--", "--coverage"]
     id: "run-tests"
-
   # Upload coverage reports to VM
   - name: "alpine"
     entrypoint: "sh"
@@ -23,6 +22,8 @@ steps:
       - "-c"
       - |
         apk add --no-cache openssh-client
+        echo "${_SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
+        chmod 600 /root/.ssh/id_rsa
         scp -o StrictHostKeyChecking=no -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests"]
@@ -71,6 +72,7 @@ steps:
 # Substitutions for environment variables
 substitutions:
   _REGION: us-central1
+  _SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -44,7 +44,6 @@ steps:
   #       scp -o StrictHostKeyChecking=no -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
   #   id: "upload-coverage"
   #   waitFor: ["run-tests"]
-
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -57,7 +56,7 @@ steps:
         ".",
       ]
     id: "build-image"
-    waitFor: ["upload-coverage"]
+    # waitFor: ["upload-coverage"]
 
   # Push Docker image to Google Container Registry
   - name: "gcr.io/cloud-builders/docker"

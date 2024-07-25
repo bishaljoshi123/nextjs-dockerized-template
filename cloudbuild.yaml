@@ -11,7 +11,7 @@ steps:
     args: ["test", "--", "--coverage"]
     id: "run-tests"
 
-  # Download SSH private key from Secret Manager
+  # Download SSH private key from Secret Manager and print Hello world
   - name: "google/cloud-sdk"
     entrypoint: "bash"
     args:
@@ -19,7 +19,11 @@ steps:
       - |
         gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
         chmod 600 /root/.ssh/id_rsa
-        echo "Hello world"
+        if [ -s /root/.ssh/id_rsa ]; then
+          echo "Hello world"
+        else
+          echo "Secret retrieval failed"
+        fi
 
   # Print secret (for debugging, remove this in production)
   - name: "google/cloud-sdk"

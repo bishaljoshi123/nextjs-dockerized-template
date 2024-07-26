@@ -26,6 +26,7 @@ steps:
         chmod 600 /root/.ssh/id_rsa
         # Print the private key to verify (for debugging, remove this in production)
         cat /root/.ssh/id_rsa
+    id: "fetch-key"
 
   # # Upload coverage reports to VM
   # - name: "alpine"
@@ -46,7 +47,7 @@ steps:
         apk add --no-cache openssh-client
         scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
-    waitFor: ["run-tests", "google/cloud-sdk"]
+    waitFor: ["run-tests", "fetch-key"]
 
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"

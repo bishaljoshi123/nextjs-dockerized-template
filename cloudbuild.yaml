@@ -56,7 +56,7 @@ steps:
         chmod 600 /root/.ssh/id_rsa
 
         apk add --no-cache openssh-client
-        scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests", "fetch-key"]
 

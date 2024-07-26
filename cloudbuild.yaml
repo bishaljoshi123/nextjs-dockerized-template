@@ -17,6 +17,9 @@ steps:
     args:
       - "-c"
       - |
+        # Create .ssh directory
+        mkdir -p /root/.ssh
+
         # Fetch the SSH private key from Secret Manager
         gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
         chmod 600 /root/.ssh/id_rsa

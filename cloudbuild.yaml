@@ -18,10 +18,10 @@ steps:
       - "-c"
       - |
         apk add --no-cache openssh-client sshpass
-        chmod 600 /workspace/vm
+        chmod 600 vm
         eval $(ssh-agent -s)
-        sshpass -p "bishal" ssh-add /workspace/vm
-        scp -o StrictHostKeyChecking=no -i /workspace/vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        sshpass -p "bishal" ssh-add vm
+        scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests"]
 
@@ -72,3 +72,4 @@ substitutions:
 # Cloud Build options
 options:
   logging: CLOUD_LOGGING_ONLY
+`

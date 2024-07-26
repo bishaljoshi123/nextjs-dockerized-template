@@ -11,22 +11,31 @@ steps:
     args: ["test", "--", "--coverage"]
     id: "run-tests"
 
-  # Fetch the SSH key from Secret Manager and use it for scp
+  # # Fetch the SSH key from Secret Manager and save it to a file
+  # - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  #   entrypoint: "sh"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       mkdir -p /root/.ssh
+  #       gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /workspace/id_rsa
+  #       chmod 600 /workspace/id_rsa
+  #   id: "fetch-key"
+  #   waitFor: ["run-tests"]
+
+  # Use the SSH key to perform the SCP operation
   - name: "alpine"
     entrypoint: "sh"
     args:
       - "-c"
       - |
         apk add --no-cache openssh-client sshpass
-        mkdir -p /root/.ssh
-        gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
-        chmod 600 /root/.ssh/id_rsa
         eval $(ssh-agent -s)
-        cat /root/.ssh/id_rsa
-        echo "bishal" | sshpass ssh-add /root/.ssh/id_rsa
-        scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        echo "bishal" | sshpass ssh-add vm
+        cat vm
+        scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
-    waitFor: ["run-tests"]
+    waitFor: ["fetch-key"]
 
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"

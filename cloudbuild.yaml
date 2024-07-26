@@ -22,6 +22,7 @@ steps:
         gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
         chmod 600 /root/.ssh/id_rsa
         eval $(ssh-agent -s)
+        cat /root/.ssh/id_rsa
         echo "bishal" | sshpass ssh-add /root/.ssh/id_rsa
         scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"

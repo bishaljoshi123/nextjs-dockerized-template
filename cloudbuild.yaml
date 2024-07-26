@@ -46,7 +46,7 @@ steps:
         apk add --no-cache openssh-client
         scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
-    waitFor: ["run-tests"]
+    waitFor: ["run-tests", "google/cloud-sdk"]
 
   # Build Docker image
   - name: "gcr.io/cloud-builders/docker"

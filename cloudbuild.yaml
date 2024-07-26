@@ -40,25 +40,38 @@ steps:
   #   id: "upload-coverage"
   #   waitFor: ["run-tests"]
 
+  # - name: "alpine"
+  #   entrypoint: "sh"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       # Ensure the .ssh directory exists
+  #       mkdir -p /root/.ssh
+  #        # Fetch the SSH private key from Secret Manager
+  #       gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
+  #        # Verify that the key was fetched correctly
+  #       ls -l /root/.ssh/
+  #       cat /root/.ssh/id_rsa
+  #        # Ensure the private key has the correct permissions
+  #       chmod 600 /root/.ssh/id_rsa
+  #       chmod 600 vm
+  #       cat vm
+  #       ssh-add vm
+
+  #       apk add --no-cache openssh-client
+  #       scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+  #   id: "upload-coverage"
+  #   waitFor: ["run-tests", "fetch-key"]
+
   - name: "alpine"
     entrypoint: "sh"
     args:
       - "-c"
       - |
-        # Ensure the .ssh directory exists
-        mkdir -p /root/.ssh
-         # Fetch the SSH private key from Secret Manager
-        gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
-         # Verify that the key was fetched correctly
-        ls -l /root/.ssh/
-        cat /root/.ssh/id_rsa
-         # Ensure the private key has the correct permissions
-        chmod 600 /root/.ssh/id_rsa
-        chmod 600 vm
-        cat vm
-
         apk add --no-cache openssh-client
-        scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        eval $(ssh-agent -s)
+        echo "$SSH_PRIVATE_KEY" | ssh-add -
+        scp -o StrictHostKeyChecking=no -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests", "fetch-key"]
 

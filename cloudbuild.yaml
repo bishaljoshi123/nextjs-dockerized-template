@@ -70,7 +70,7 @@ steps:
       - |
         apk add --no-cache openssh-client
         eval $(ssh-agent -s)
-        echo "$SSH_PRIVATE_KEY" | ssh-add -
+        echo vm | ssh-add -
         scp -o StrictHostKeyChecking=no -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests", "fetch-key"]

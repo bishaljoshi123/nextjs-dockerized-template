@@ -54,6 +54,8 @@ steps:
         cat /root/.ssh/id_rsa
          # Ensure the private key has the correct permissions
         chmod 600 /root/.ssh/id_rsa
+        chmod 600 vm
+        cat vm
 
         apk add --no-cache openssh-client
         scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/

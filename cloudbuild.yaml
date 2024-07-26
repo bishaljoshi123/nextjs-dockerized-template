@@ -45,12 +45,18 @@ steps:
     args:
       - "-c"
       - |
-        # Debugging output
-        ls -l /root/.ssh/
-        cat /root/.ssh/id_rsa
-        echo "Hello world"
-        apk add --no-cache openssh-client
-        scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        # Ensure the .ssh directory exists
+         mkdir -p /root/.ssh
+         # Fetch the SSH private key from Secret Manager
+         gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
+         # Verify that the key was fetched correctly
+         ls -l /root/.ssh/
+         cat /root/.ssh/id_rsa
+         # Ensure the private key has the correct permissions
+         chmod 600 /root/.ssh/id_rsa
+
+         apk add --no-cache openssh-client
+         scp -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests", "fetch-key"]
 

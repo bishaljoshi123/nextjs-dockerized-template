@@ -11,18 +11,6 @@ steps:
     args: ["test", "--", "--coverage"]
     id: "run-tests"
 
-  # # Fetch the SSH key from Secret Manager and save it to a file
-  # - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       mkdir -p /root/.ssh
-  #       gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /workspace/id_rsa
-  #       chmod 600 /workspace/id_rsa
-  #   id: "fetch-key"
-  #   waitFor: ["run-tests"]
-
   # Use the SSH key to perform the SCP operation
   - name: "alpine"
     entrypoint: "sh"
@@ -30,10 +18,10 @@ steps:
       - "-c"
       - |
         apk add --no-cache openssh-client sshpass
+        chmod 600 /workspace/vm
         eval $(ssh-agent -s)
-        echo "bishal" | sshpass ssh-add vm
-        cat vm
-        scp -o StrictHostKeyChecking=no -i vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
+        sshpass -p "bishal" ssh-add /workspace/vm
+        scp -o StrictHostKeyChecking=no -i /workspace/vm -r coverage/lcov-report/* bishal@34.41.188.85:/var/www/html/coverage/
     id: "upload-coverage"
     waitFor: ["run-tests"]
 

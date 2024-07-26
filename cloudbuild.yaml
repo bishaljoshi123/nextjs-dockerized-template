@@ -19,29 +19,27 @@ steps:
       - |
         echo "Hello world"
 
-  # # Download SSH private key from Secret Manager and print Hello world
-  # - name: "google/cloud-sdk"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /root/.ssh/id_rsa
-  #       chmod 600 /root/.ssh/id_rsa
-  #       if [ -s /root/.ssh/id_rsa ]; then
-  #         echo "Hello world"
-  #       else
-  #         echo "Secret retrieval failed"
-  #       fi
-
-  # Print secret (for debugging, remove this in production)
+  # Download SSH private key from Secret Manager and print Hello world
   - name: "google/cloud-sdk"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        echo "Secret contents:"
-        cat /root/.ssh/id_rsa
-
+        gcloud secrets versions access latest --secret="YOUR_SECRET_NAME" > /.ssh/id_rsa
+        chmod 600 /.ssh/id_rsa
+        if [ -s /.ssh/id_rsa ]; then
+          echo "Hello world"
+        else
+          echo "Secret retrieval failed"
+        fi
+  # # Print secret (for debugging, remove this in production)
+  # - name: "google/cloud-sdk"
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       echo "Secret contents:"
+  #       cat /root/.ssh/id_rsa
   # # Upload coverage reports to VM
   # - name: "alpine"
   #   entrypoint: "sh"

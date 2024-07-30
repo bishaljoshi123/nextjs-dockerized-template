@@ -3,5 +3,6 @@ FROM node:18-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN mkdir -p /workspace && chmod 777 /workspace
 COPY . .
 CMD ["npm", "run", "dev"]

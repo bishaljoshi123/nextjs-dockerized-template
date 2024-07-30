@@ -63,7 +63,7 @@ steps:
           -Dsonar.tests=src \
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report/index.html \
           -Dsonar.host.url=http://34.46.21.254:9001 \
-          -Dsonar.login=$SONARQUBE_TOKEN
+          -Dsonar.login=sqp_49027e0e05fcecf71769b05ea78cef7b9f6f3025
     id: "sonar-analysis"
     waitFor:
       - "deploy"
@@ -71,7 +71,6 @@ steps:
 # Substitutions for environment variables
 substitutions:
   _REGION: us-central1
-  SONARQUBE_TOKEN: "sqp_49027e0e05fcecf71769b05ea78cef7b9f6f3025"
 
 # Cloud Build options
 options:

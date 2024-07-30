@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./src:/app/src
-      - .:/app/
       - ./public:/app/public
     restart: always
     ports:

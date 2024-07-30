@@ -58,9 +58,9 @@ steps:
       - "-c"
       - |
         sonar-scanner \
-          -Dsonar.projectKey=my-project-key \
-          -Dsonar.sources=src \
-          -Dsonar.tests=src \
+          -Dsonar.projectKey=lolo-frontend \
+          -Dsonar.sources=.
+          -Dsonar.tests=.
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report/index.html \
           -Dsonar.host.url=http://34.46.21.254:9001 \
           -Dsonar.login=sqp_49027e0e05fcecf71769b05ea78cef7b9f6f3025

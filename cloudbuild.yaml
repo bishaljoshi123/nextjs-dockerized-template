@@ -51,22 +51,16 @@ steps:
     id: "deploy"
     waitFor: ["push-image"]
 
-  # Run SonarQube analysis
-  - name: "sonarsource/sonar-scanner-cli:latest"
+  # Run SonarQube Analysis
+  - name: "sonarsource/sonar-scanner-cli"
     entrypoint: "bash"
     args:
-      - "-c"
-      - |
-        sonar-scanner \
-          -Dsonar.projectKey=lolo-frontend \
-          -Dsonar.sources=.
-          -Dsonar.tests=.
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report/index.html \
-          -Dsonar.host.url=http://34.46.21.254:9001 \
-          -Dsonar.login=sqp_49027e0e05fcecf71769b05ea78cef7b9f6f3025
+      [
+        "-c",
+        "sonar-scanner -Dsonar.projectKey=lolo-frontend -Dsonar.sources=. -Dsonar.host.url=http://34.46.21.254:9001 -Dsonar.login=sqp_49027e0e05fcecf71769b05ea78cef7b9f6f3025",
+      ]
     id: "sonar-analysis"
-    waitFor:
-      - "deploy"
+    waitFor: ["run-tests"]
 
 # Substitutions for environment variables
 substitutions:

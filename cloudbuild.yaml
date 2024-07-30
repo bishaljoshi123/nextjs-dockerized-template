@@ -52,6 +52,7 @@ steps:
     waitFor: ["push-image"]
 
 # Run SonarQube analysis
+
 - name: "node:16"
   entrypoint: "/bin/sh"
   args:

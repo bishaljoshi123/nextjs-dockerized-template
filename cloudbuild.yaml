@@ -53,7 +53,7 @@ steps:
 
   # Run SonarQube analysis
 
-  - name: "node:16"
+  - name: "node:18"
     entrypoint: "/bin/sh"
     args:
       [

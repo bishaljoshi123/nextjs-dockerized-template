@@ -1,8 +1,8 @@
 #!/bin/sh
 
-PROJECT_KEY='lolo-frontend'
-SONAR_HOST='http://35.193.96.87:9001'
-SONAR_TOKEN='squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'
+PROJECT_KEY=$1
+SONAR_HOST=$2
+SONAR_TOKEN=$3
 
 CE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r '.current.id')
 echo $CE_TASK_ID

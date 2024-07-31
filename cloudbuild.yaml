@@ -62,13 +62,13 @@ steps:
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
-  # Install jq and run the quality gate check script
+  # Install jq, set permissions, and run the quality gate check script with arguments
   - name: "node:16"
     entrypoint: "/bin/sh"
     args:
       [
         "-c",
-        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && ./check_quality_gate.sh",
+        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && ./check_quality_gate.sh 'lolo-frontend' 'http://35.222.115.216:9001' 'sqp_fbf1d71249cd4716699619847b5d5661a0755521'",
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]

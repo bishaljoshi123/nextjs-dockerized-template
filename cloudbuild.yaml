@@ -62,14 +62,10 @@ steps:
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
-  # Copy and run the quality gate check script
-  - name: "alpine"
+  # Run the quality gate check script
+  - name: "node:16"
     entrypoint: "/bin/sh"
-    args:
-      [
-        "-c",
-        "cp check_quality_gate.sh /workspace/ && chmod +x /workspace/check_quality_gate.sh && /workspace/check_quality_gate.sh",
-      ]
+    args: ["./check_quality_gate.sh"]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]
 

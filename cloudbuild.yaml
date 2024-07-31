@@ -62,10 +62,14 @@ steps:
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
-  # Run the quality gate check script
+  # Install jq and run the quality gate check script
   - name: "node:16"
     entrypoint: "/bin/sh"
-    args: ["./check_quality_gate.sh"]
+    args:
+      [
+        "-c",
+        "apt-get update && apt-get install -y jq && ./check_quality_gate.sh",
+      ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]
 

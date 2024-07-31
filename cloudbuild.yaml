@@ -62,13 +62,13 @@ steps:
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
-  # Check SonarQube quality gate status
-  - name: "node:16"
+  # Copy and run the quality gate check script
+  - name: "alpine"
     entrypoint: "/bin/sh"
     args:
       [
         "-c",
-        "PROJECT_KEY='lolo-frontend'\nSONAR_HOST='http://35.193.96.87:9001'\nSONAR_TOKEN='squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'\nCE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r '.current.id')\necho $CE_TASK_ID\nQUALITY_GATE_STATUS=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/task?id=$CE_TASK_ID | jq -r '.task.status')\necho $QUALITY_GATE_STATUS\nif [ \"$QUALITY_GATE_STATUS\" = \"SUCCESS\" ]; then\n  echo 'Quality Gate passed'\n  exit 0\nelse\n  echo 'Quality Gate failed'\n  exit 1\nfi",
+        "cp check_quality_gate.sh /workspace/ && chmod +x /workspace/check_quality_gate.sh && /workspace/check_quality_gate.sh",
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]

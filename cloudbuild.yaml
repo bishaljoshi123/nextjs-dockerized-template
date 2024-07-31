@@ -62,6 +62,17 @@ steps:
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
+  # Check SonarQube quality gate status
+  - name: "node:16"
+    entrypoint: "/bin/sh"
+    args:
+      [
+        "-c",
+        'PROJECT_KEY=''lolo-frontend'' && SONAR_HOST=''http://35.222.115.216:9001'' && SONAR_TOKEN=''sqp_fbf1d71249cd4716699619847b5d5661a0755521'' && CE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r ''.current.id'') && echo $CE_TASK_ID && QUALITY_GATE_STATUS=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/task?id=$CE_TASK_ID | jq -r ''.task.status'') && echo $QUALITY_GATE_STATUS && if [ "$QUALITY_GATE_STATUS" = "SUCCESS" ]; then echo ''Quality Gate passed''; exit 0; else echo ''Quality Gate failed''; exit 1; fi',
+      ]
+    id: "check-quality-gate"
+    waitFor: ["sonar-analysis"]
+
 # Substitutions for environment variables
 substitutions:
   _REGION: us-central1

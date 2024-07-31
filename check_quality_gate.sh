@@ -1,8 +1,8 @@
 #!/bin/sh
 
-PROJECT_KEY=$1
-SONAR_HOST=$2
-SONAR_TOKEN=$3
+PROJECT_KEY=${PROJECT_KEY}
+SONAR_HOST=${SONAR_HOST}
+SONAR_TOKEN=${SONAR_TOKEN}
 
 CE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r '.current.id')
 echo $CE_TASK_ID

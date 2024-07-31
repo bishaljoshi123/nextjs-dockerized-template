@@ -57,18 +57,18 @@ steps:
     args:
       [
         "-c",
-        "curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && unzip sonar-scanner.zip -d /opt && /opt/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=lolo-frontend -Dsonar.sources=. -Dsonar.host.url=http://35.193.96.87:9001 -Dsonar.login=sqp_fbf1d71249cd4716699619847b5d5661a0755521 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report.html -X",
+        "curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && unzip sonar-scanner.zip -d /opt && /opt/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=lolo-frontend -Dsonar.sources=. -Dsonar.host.url=http://35.222.115.216:9001 -Dsonar.login=sqp_fbf1d71249cd4716699619847b5d5661a0755521 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report.html -X",
       ]
     id: "sonar-analysis"
     waitFor: ["run-tests"]
 
-  # Install jq, set permissions, and run the quality gate check script with arguments
+  # Install jq, set permissions, and run the quality gate check script with environment variables
   - name: "node:16"
     entrypoint: "/bin/sh"
     args:
       [
         "-c",
-        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && ./check_quality_gate.sh 'lolo-frontend' 'http://35.193.96.87:9001' 'squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'",
+        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && PROJECT_KEY='lolo-frontend' SONAR_HOST='http://35.222.115.216:9001' SONAR_TOKEN='sqp_fbf1d71249cd4716699619847b5d5661a0755521' ./check_quality_gate.sh",
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]

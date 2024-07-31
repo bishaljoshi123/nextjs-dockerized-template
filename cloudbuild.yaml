@@ -57,7 +57,7 @@ steps:
     args:
       [
         "-c",
-        "curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && unzip sonar-scanner.zip -d /opt && /opt/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=lolo-frontend -Dsonar.sources=. -Dsonar.host.url=http://35.222.115.216:9001 -Dsonar.login=sqp_fbf1d71249cd4716699619847b5d5661a0755521 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report.html -X",
+        "curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && unzip sonar-scanner.zip -d /opt && /opt/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.projectKey=lolo-frontend -Dsonar.sources=. -Dsonar.host.url=http://35.193.96.87:9001 -Dsonar.login=sqp_fbf1d71249cd4716699619847b5d5661a0755521 -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report.html -X",
       ]
     id: "sonar-analysis"
     waitFor: ["run-tests"]
@@ -68,7 +68,7 @@ steps:
     args:
       [
         "-c",
-        'PROJECT_KEY=''lolo-frontend'' && SONAR_HOST=''http://35.222.115.216:9001'' && SONAR_TOKEN=''sqp_fbf1d71249cd4716699619847b5d5661a0755521'' && CE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r ''.current.id'') && echo $CE_TASK_ID && QUALITY_GATE_STATUS=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/task?id=$CE_TASK_ID | jq -r ''.task.status'') && echo $QUALITY_GATE_STATUS && if [ "$QUALITY_GATE_STATUS" = "SUCCESS" ]; then echo ''Quality Gate passed''; exit 0; else echo ''Quality Gate failed''; exit 1; fi',
+        'PROJECT_KEY=''lolo-frontend'' && SONAR_HOST=''http://35.193.96.87:9001'' && SONAR_TOKEN=''squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'' && CE_TASK_ID=$(curl -u squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542: http://35.193.96.87:9001/api/ce/component?component=$PROJECT_KEY | jq -r ''.current.id'') && echo $CE_TASK_ID && QUALITY_GATE_STATUS=$(curl -u squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542: http://35.193.96.87:9001/api/ce/task?id=$CE_TASK_ID | jq -r ''.task.status'') && echo $QUALITY_GATE_STATUS && if [ "$QUALITY_GATE_STATUS" = "SUCCESS" ]; then echo ''Quality Gate passed''; exit 0; else echo ''Quality Gate failed''; exit 1; fi',
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]

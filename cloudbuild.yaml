@@ -68,7 +68,7 @@ steps:
     args:
       [
         "-c",
-        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && ./check_quality_gate.sh 'lolo-frontend' 'http://35.222.115.216:9001' 'sqp_fbf1d71249cd4716699619847b5d5661a0755521'",
+        "apt-get update && apt-get install -y jq && chmod +x check_quality_gate.sh && ./check_quality_gate.sh 'lolo-frontend' 'http://35.193.96.87:9001' 'squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'",
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]

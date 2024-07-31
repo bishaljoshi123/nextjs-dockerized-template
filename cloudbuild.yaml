@@ -68,20 +68,7 @@ steps:
     args:
       [
         "-c",
-        |
-          PROJECT_KEY='lolo-frontend'
-          SONAR_HOST='http://35.193.96.87:9001'
-          SONAR_TOKEN='squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'
-          CE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r '.current.id')
-          echo $CE_TASK_ID
-          QUALITY_GATE_STATUS=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/task?id=$CE_TASK_ID | jq -r '.task.status')
-          echo $QUALITY_GATE_STATUS
-          if [ "$QUALITY_GATE_STATUS" = "SUCCESS" ]; then
-            echo 'Quality Gate passed'
-            exit 0
-          else
-            echo 'Quality Gate failed'
-            exit 1
+        "PROJECT_KEY='lolo-frontend'\nSONAR_HOST='http://35.193.96.87:9001'\nSONAR_TOKEN='squ_3f583409bb9c564cfaca350e4fd4bb70f4da7542'\nCE_TASK_ID=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/component?component=$PROJECT_KEY | jq -r '.current.id')\necho $CE_TASK_ID\nQUALITY_GATE_STATUS=$(curl -u $SONAR_TOKEN: $SONAR_HOST/api/ce/task?id=$CE_TASK_ID | jq -r '.task.status')\necho $QUALITY_GATE_STATUS\nif [ \"$QUALITY_GATE_STATUS\" = \"SUCCESS\" ]; then\n  echo 'Quality Gate passed'\n  exit 0\nelse\n  echo 'Quality Gate failed'\n  exit 1\nfi",
       ]
     id: "check-quality-gate"
     waitFor: ["sonar-analysis"]
